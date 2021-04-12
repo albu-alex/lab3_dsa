@@ -5,12 +5,21 @@ using namespace std;
 #include <exception>
 
 SortedIteratedList::SortedIteratedList(Relation r) {
-	//TODO - Implementation
+	this->relation = r;
+	this->doubly_linked_list.capacity = INITIAL_CAPACITY;
+	this->doubly_linked_list.head = -1;
+	this->doubly_linked_list.tail = -1;
+	this->doubly_linked_list.elements = new TComp[INITIAL_CAPACITY];
+	this->doubly_linked_list.next = new int[INITIAL_CAPACITY];
+	for(int i=0;i<INITIAL_CAPACITY-1;i++)
+	    this->doubly_linked_list.next[i] = i+1;
+	this->doubly_linked_list.next[INITIAL_CAPACITY-1] = -1;
+	this->doubly_linked_list.FirstEmpty = 1;
+	this->_size=0;
 }
 
 int SortedIteratedList::size() const {
-	//TODO - Implementation
-	return 0;
+	return this->_size;
 }
 
 bool SortedIteratedList::isEmpty() const {

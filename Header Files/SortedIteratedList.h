@@ -6,13 +6,25 @@ class ListIterator;
 typedef int TComp;
 typedef bool (*Relation)(TComp, TComp);
 #define NULL_TCOMP -11111
+#define INITIAL_CAPACITY 10
 
+class DLLA{
+public:
+    int capacity;
+    int head;
+    int tail;
+    int FirstEmpty;
+    int* next;
+    TComp* elements;
+};
 
 class SortedIteratedList {
 private:
 	friend class ListIterator;
 private:
-	//TODO - Representation
+	Relation relation;
+    DLLA doubly_linked_list;
+    int _size;
 
 public:
 	// constructor
