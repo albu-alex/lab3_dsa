@@ -50,7 +50,9 @@ ListIterator SortedIteratedList::search(TComp e) const{
 }
 
 void SortedIteratedList::add(TComp e) {
-	//TODO - Implementation
+	if(this->relation(e, this->doubly_linked_list.array[this->doubly_linked_list.head].element)){
+	    this->doubly_linked_list.array[this->doubly_linked_list.head].previous = 0; //yet_to_be_implemented
+	}
 }
 
 SortedIteratedList::~SortedIteratedList() {

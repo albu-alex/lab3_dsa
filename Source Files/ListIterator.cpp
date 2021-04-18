@@ -5,25 +5,26 @@
 using namespace std;
 
 ListIterator::ListIterator(const SortedIteratedList& list) : list(list){
-	//TODO - Implementation
+	this->current_element = 0;
 }
 
 void ListIterator::first(){
-	//TODO - Implementation
+    this->current_element = 0;
 }
 
 void ListIterator::next(){
-	//TODO - Implementation
+	this->current_element++;
 }
 
 bool ListIterator::valid() const{
-	//TODO - Implementation
-	return false;
+	if(this->current_element >= this->list.doubly_linked_list.capacity) return false;
+	return true;
 }
 
 TComp ListIterator::getCurrent() const{
-	//TODO - Implementation
-	return NULL_TCOMP;
+	if(!this->valid())
+	    throw exception();
+	return this->list.doubly_linked_list[this->current_element];
 }
 
 

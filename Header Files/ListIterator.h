@@ -6,9 +6,8 @@ class ListIterator{
 	friend class SortedIteratedList;
 private:
 	const SortedIteratedList& list;
+    int current_element;
 	ListIterator(const SortedIteratedList& list);
-
-	//TODO - Representation
 public:
 	void first();
 	void next();
