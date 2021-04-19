@@ -8,12 +8,14 @@ ListIterator::ListIterator(const SortedIteratedList& list) : list(list){
 	this->current_element = list.doubly_linked_list.head;
 }
 
-void ListIterator::first(){
-    this->current_element = list.doubly_linked_list.head;;
+void ListIterator::first() {
+    this->current_element = list.doubly_linked_list.head;
 }
 
 void ListIterator::next(){
-	this->current_element = list.doubly_linked_list.array[this->current_element].next;
+	if(!this->valid())
+	    throw exception();
+    this->current_element = list.doubly_linked_list.array[this->current_element].next;
 }
 
 bool ListIterator::valid() const{

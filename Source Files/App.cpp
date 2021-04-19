@@ -5,7 +5,7 @@
 
 int main(){
     testAll();
-//    testAllExtended();
+    testAllExtended();
     std::cout<<"Finished IL Tests!"<<std::endl;
 	system("pause");
 }
