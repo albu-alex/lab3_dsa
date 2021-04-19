@@ -25,18 +25,18 @@ int SortedIteratedList::size() const {
 }
 
 bool SortedIteratedList::isEmpty() const {
-	if(this->doubly_linked_list.size <= 0) return false;
+	if(this->doubly_linked_list.size > 0) return false;
 	return true;
 }
 
 ListIterator SortedIteratedList::first() const {
-	//TODO - Implementation
-	return ListIterator(*this);
+    auto poz = ListIterator(*this);
+    poz.first();
+    return poz;
 }
 
 TComp SortedIteratedList::getElement(ListIterator poz) const {
-	//TODO - Implementation
-	return NULL_TCOMP;
+    return poz.getCurrent();
 }
 
 TComp SortedIteratedList::remove(ListIterator& poz) {
@@ -50,11 +50,25 @@ ListIterator SortedIteratedList::search(TComp e) const{
 }
 
 void SortedIteratedList::add(TComp e) {
-	if(this->relation(e, this->doubly_linked_list.array[this->doubly_linked_list.head].element)){
-	    this->doubly_linked_list.array[this->doubly_linked_list.head].previous = 0; //yet_to_be_implemented
+	if(this->size() == this->doubly_linked_list.capacity)
+	    //resize eventually
+        return;
+
+	if(this->size() == 0){
+	  this->doubly_linked_list.head = this->doubly_linked_list.first_empty;
+	  this->doubly_linked_list.tail = this->doubly_linked_list.first_empty;
+	  this->doubly_linked_list.first_empty = this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next;
+	  this->doubly_linked_list.array[this->doubly_linked_list.head].element = e;
+	  this->doubly_linked_list.array[this->doubly_linked_list.head].next = -1;
+	  this->doubly_linked_list.array[this->doubly_linked_list.head].previous = -1;
+	}
+	this->doubly_linked_list.size++;
+
+    while(!this->relation(e, this->doubly_linked_list.array[this->doubly_linked_list.head].element)){
+        return;
 	}
 }
 
 SortedIteratedList::~SortedIteratedList() {
-	//TODO - Implementation
+	delete this->doubly_linked_list.array;
 }
