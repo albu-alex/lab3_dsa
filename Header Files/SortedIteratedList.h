@@ -6,7 +6,7 @@ class ListIterator;
 typedef int TComp;
 typedef bool (*Relation)(TComp, TComp);
 #define NULL_TCOMP -11111
-#define INITIAL_CAPACITY 1
+#define INITIAL_CAPACITY 60
 
 class Node{
     public:
@@ -64,6 +64,9 @@ public:
 
 	//resize for the current dynamic array of nodes
 	void resize();
+
+	//allocate a new node
+	int allocate();
 
 	//TODO elimina
 	//void print();
