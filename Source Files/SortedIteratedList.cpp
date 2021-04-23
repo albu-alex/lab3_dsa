@@ -113,6 +113,9 @@ int SortedIteratedList::allocate() {
 }
 
 void SortedIteratedList::add(TComp e) {
+//    if(this->size() == this->doubly_linked_list.capacity)
+//        resize();
+//
 //    int new_element = allocate();
 //
 //    if(new_element == -1){
@@ -131,14 +134,13 @@ void SortedIteratedList::add(TComp e) {
 //        this->doubly_linked_list.array[new_element].next = next_node;
 //        this->doubly_linked_list.array[new_element].previous = current_position;
 //        this->doubly_linked_list.array[current_position].next = new_element;
+//        this->doubly_linked_list.array[current_position].element = e;
 //        if(next_node == -1)
 //            this->doubly_linked_list.tail = new_element;
 //        else
 //            this->doubly_linked_list.array[next_node].previous = new_element;
 //    }
 //    this->doubly_linked_list.size++;
-	if(this->size() == this->doubly_linked_list.capacity)
-	    resize();
 
     if(this->size() == 0){
 	  this->doubly_linked_list.head = this->doubly_linked_list.first_empty;
@@ -151,9 +153,10 @@ void SortedIteratedList::add(TComp e) {
       this->doubly_linked_list.array[this->doubly_linked_list.tail].next = -1;
       this->doubly_linked_list.array[this->doubly_linked_list.tail].previous = -1;
 	} else{
+        //positions won t update correctly
         int current_position = this->doubly_linked_list.head;
         int next_position = this->doubly_linked_list.array[this->doubly_linked_list.head].next;
-        while(next_position !=-1 && !this->relation(e, this->doubly_linked_list.array[current_position].element)){
+        while(next_position !=-1 && !this->relation(e, this->doubly_linked_list.array[current_position].element) && this->doubly_linked_list.array[current_position].element !=-842150451){
             current_position = next_position;
             next_position = this->doubly_linked_list.array[current_position].next;
         }
