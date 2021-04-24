@@ -142,30 +142,46 @@ void SortedIteratedList::add(TComp e) {
 //    }
 //    this->doubly_linked_list.size++;
 
-    if(this->size() == 0){
-	  this->doubly_linked_list.head = this->doubly_linked_list.first_empty;
-	  this->doubly_linked_list.tail = this->doubly_linked_list.first_empty;
-	  this->doubly_linked_list.first_empty = this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next;
-	  this->doubly_linked_list.array[this->doubly_linked_list.head].element = e;
-	  this->doubly_linked_list.array[this->doubly_linked_list.head].next = -1;
-	  this->doubly_linked_list.array[this->doubly_linked_list.head].previous = -1;
-	  this->doubly_linked_list.array[this->doubly_linked_list.tail].element = e;
-      this->doubly_linked_list.array[this->doubly_linked_list.tail].next = -1;
-      this->doubly_linked_list.array[this->doubly_linked_list.tail].previous = -1;
-	} else{
+    if(this->size() == 0) {
+        this->doubly_linked_list.head = this->doubly_linked_list.first_empty;
+        this->doubly_linked_list.tail = this->doubly_linked_list.first_empty;
+        this->doubly_linked_list.first_empty = this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next;
+        this->doubly_linked_list.array[this->doubly_linked_list.head].element = e;
+        this->doubly_linked_list.array[this->doubly_linked_list.head].next = -1;
+        this->doubly_linked_list.array[this->doubly_linked_list.head].previous = -1;
+        this->doubly_linked_list.first_empty++;
+    }
+    else if(this->size() == 1){
+        this->doubly_linked_list.tail++;
+        if(this->relation(e, this->doubly_linked_list.array[this->doubly_linked_list.head].element)){
+            this->doubly_linked_list.array[this->doubly_linked_list.head].element = e;
+        }
+        else{
+            this->doubly_linked_list.array[this->doubly_linked_list.tail].element = e;
+        }
+        this->doubly_linked_list.array[this->doubly_linked_list.tail].previous = this->doubly_linked_list.head;
+        this->doubly_linked_list.array[this->doubly_linked_list.head].next = this->doubly_linked_list.tail;
+        this->doubly_linked_list.first_empty++;
+    }
+    else{
         //positions won t update correctly
+        this->doubly_linked_list.tail++;
         int current_position = this->doubly_linked_list.head;
         int next_position = this->doubly_linked_list.array[this->doubly_linked_list.head].next;
         while(next_position !=-1 && !this->relation(e, this->doubly_linked_list.array[current_position].element) && this->doubly_linked_list.array[current_position].element !=-842150451){
             current_position = next_position;
             next_position = this->doubly_linked_list.array[current_position].next;
         }
-        int new_position = this->doubly_linked_list.first_empty;
-        this->doubly_linked_list.first_empty = this->doubly_linked_list.array[new_position].next;
+        int previous_next = this->doubly_linked_list.array[current_position].next;
+        this->doubly_linked_list.array[current_position].next=this->doubly_linked_list.first_empty;
+        this->doubly_linked_list.array[this->doubly_linked_list.first_empty].element = e;
+        this->doubly_linked_list.array[this->doubly_linked_list.first_empty].previous = current_position;
+        this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next = previous_next;
+        this->doubly_linked_list.first_empty++;
 
-        this->doubly_linked_list.array[new_position].element = e;
-        this->doubly_linked_list.array[current_position].next = new_position;
-        this->doubly_linked_list.array[new_position].previous = current_position;
+//        this->doubly_linked_list.array[new_position].element = e;
+//        this->doubly_linked_list.array[current_position].next = new_position;
+//        this->doubly_linked_list.array[new_position].previous = current_position;
     }
     this->doubly_linked_list.size++;
 }
