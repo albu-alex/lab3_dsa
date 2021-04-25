@@ -166,22 +166,29 @@ void SortedIteratedList::add(TComp e) {
     else{
         //positions won t update correctly
         this->doubly_linked_list.tail++;
+
+        this->doubly_linked_list.array[this->doubly_linked_list.first_empty].element = e;
         int current_position = this->doubly_linked_list.head;
         int next_position = this->doubly_linked_list.array[this->doubly_linked_list.head].next;
-        while(next_position !=-1 && !this->relation(e, this->doubly_linked_list.array[current_position].element) && this->doubly_linked_list.array[current_position].element !=-842150451){
+        while(next_position !=-1 && !this->relation(e, this->doubly_linked_list.array[current_position].element) && current_position != this->doubly_linked_list.first_empty){
             current_position = next_position;
             next_position = this->doubly_linked_list.array[current_position].next;
         }
-        int previous_next = this->doubly_linked_list.array[current_position].next;
-        this->doubly_linked_list.array[current_position].next=this->doubly_linked_list.first_empty;
-        this->doubly_linked_list.array[this->doubly_linked_list.first_empty].element = e;
-        this->doubly_linked_list.array[this->doubly_linked_list.first_empty].previous = current_position;
-        this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next = previous_next;
+        current_position = next_position;
+        if(next_position == -1){
+            TComp auxiliary = this->doubly_linked_list.array[this->doubly_linked_list.tail].element;
+            this->doubly_linked_list.array[current_position].element = e;
+            int previous_position = this->doubly_linked_list.array[current_position].previous;
+            this->doubly_linked_list.array[previous_position].element = auxiliary;
+        }
+        else{
+            TComp auxiliary = this->doubly_linked_list.array[next_position].element;
+            this->doubly_linked_list.array[current_position].element = e;
+            this->doubly_linked_list.array[current_position].next = next_position;
+            int previous_position = this->doubly_linked_list.array[current_position].previous;
+            this->doubly_linked_list.array[previous_position].element = auxiliary;
+        }
         this->doubly_linked_list.first_empty++;
-
-//        this->doubly_linked_list.array[new_position].element = e;
-//        this->doubly_linked_list.array[current_position].next = new_position;
-//        this->doubly_linked_list.array[new_position].previous = current_position;
     }
     this->doubly_linked_list.size++;
 }
