@@ -113,84 +113,80 @@ int SortedIteratedList::allocate() {
 }
 
 void SortedIteratedList::add(TComp e) {
-//    if(this->size() == this->doubly_linked_list.capacity)
-//        resize();
-//
-//    int new_element = allocate();
-//
-//    if(new_element == -1){
-//        this->resize();
-//        new_element = allocate();
-//    }
-//
-//    int current_position = this->doubly_linked_list.head;
-//    int next_position = this->doubly_linked_list.array[this->doubly_linked_list.head].next;
-//    while(!this->relation(e, this->doubly_linked_list.array[current_position].element) && next_position == -1){
-//        current_position = next_position;
-//        next_position = this->doubly_linked_list.array[current_position].next;
-//    }
-//    if(current_position != -1){
-//        int next_node = this->doubly_linked_list.array[current_position].next;
-//        this->doubly_linked_list.array[new_element].next = next_node;
-//        this->doubly_linked_list.array[new_element].previous = current_position;
-//        this->doubly_linked_list.array[current_position].next = new_element;
-//        this->doubly_linked_list.array[current_position].element = e;
-//        if(next_node == -1)
-//            this->doubly_linked_list.tail = new_element;
-//        else
-//            this->doubly_linked_list.array[next_node].previous = new_element;
-//    }
-//    this->doubly_linked_list.size++;
+    if(this->size() == this->doubly_linked_list.capacity)
+        this->resize();
 
-    if(this->size() == 0) {
-        this->doubly_linked_list.head = this->doubly_linked_list.first_empty;
-        this->doubly_linked_list.tail = this->doubly_linked_list.first_empty;
-        this->doubly_linked_list.first_empty = this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next;
+    if(this->size() == 0)
+    {
+        this->doubly_linked_list.size++;
+        this->doubly_linked_list.head=this->doubly_linked_list.first_empty;
+        this->doubly_linked_list.first_empty=this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next;
+
+        if(this->doubly_linked_list.first_empty != -1)
+            this->doubly_linked_list.array[this->doubly_linked_list.first_empty].previous = -1;
+
         this->doubly_linked_list.array[this->doubly_linked_list.head].element = e;
         this->doubly_linked_list.array[this->doubly_linked_list.head].next = -1;
-        this->doubly_linked_list.array[this->doubly_linked_list.head].previous = -1;
-        this->doubly_linked_list.first_empty++;
+        this->doubly_linked_list.tail = this->doubly_linked_list.head;
     }
-    else if(this->size() == 1){
-        this->doubly_linked_list.tail++;
-        if(this->relation(e, this->doubly_linked_list.array[this->doubly_linked_list.head].element)){
-            this->doubly_linked_list.array[this->doubly_linked_list.head].element = e;
+    else
+    if(this->relation(e, this->doubly_linked_list.array[this->doubly_linked_list.head].element))
+    {
+        this->doubly_linked_list.size++;
+        int new_head = this->doubly_linked_list.first_empty;
+        this->doubly_linked_list.first_empty = this->doubly_linked_list.array[this->doubly_linked_list.head].next;
+
+        if(this->doubly_linked_list.first_empty != -1)
+            this->doubly_linked_list.array[this->doubly_linked_list.first_empty].previous = -1;
+
+        this->doubly_linked_list.array[new_head].next = this->doubly_linked_list.head;
+        this->doubly_linked_list.array[new_head].previous = -1;
+        this->doubly_linked_list.array[new_head].element = e;
+        this->doubly_linked_list.array[this->doubly_linked_list.head].previous = new_head;
+        this->doubly_linked_list.head = new_head;
+    }
+    else
+    {
+        int CurrentElement = this->doubly_linked_list.head;
+        while(this->doubly_linked_list.array[CurrentElement].next != -1 && !this->relation(e, this->doubly_linked_list.array[this->doubly_linked_list.array[CurrentElement].next].element))
+        {
+            CurrentElement = this->doubly_linked_list.array[CurrentElement].next;
         }
-        else{
+        if(this->doubly_linked_list.array[CurrentElement].next == -1)
+        {
+            this->doubly_linked_list.size++;
+            int new_element = this->doubly_linked_list.first_empty;
+
+            this->doubly_linked_list.first_empty = this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next;
+            if(this->doubly_linked_list.first_empty != -1)
+                this->doubly_linked_list.array[this->doubly_linked_list.first_empty].previous = -1;
+
+            this->doubly_linked_list.array[this->doubly_linked_list.tail].next = new_element;
+            int old_tail = this->doubly_linked_list.tail;
+            this->doubly_linked_list.tail = new_element;
+            this->doubly_linked_list.array[this->doubly_linked_list.tail].next = -1;
+            this->doubly_linked_list.array[this->doubly_linked_list.tail].previous = old_tail;
             this->doubly_linked_list.array[this->doubly_linked_list.tail].element = e;
         }
-        this->doubly_linked_list.array[this->doubly_linked_list.tail].previous = this->doubly_linked_list.head;
-        this->doubly_linked_list.array[this->doubly_linked_list.head].next = this->doubly_linked_list.tail;
-        this->doubly_linked_list.first_empty++;
-    }
-    else{
-        //positions won t update correctly
-        this->doubly_linked_list.tail++;
+        else
+        if(this->doubly_linked_list.array[CurrentElement].next != -1 && this->relation(e, this->doubly_linked_list.array[this->doubly_linked_list.array[CurrentElement].next].element))
+        {
+            this->doubly_linked_list.size++;
+            int new_element = this->doubly_linked_list.first_empty;
 
-        this->doubly_linked_list.array[this->doubly_linked_list.first_empty].element = e;
-        int current_position = this->doubly_linked_list.head;
-        int next_position = this->doubly_linked_list.array[this->doubly_linked_list.head].next;
-        while(next_position !=-1 && !this->relation(e, this->doubly_linked_list.array[current_position].element) && current_position != this->doubly_linked_list.first_empty){
-            current_position = next_position;
-            next_position = this->doubly_linked_list.array[current_position].next;
+            this->doubly_linked_list.first_empty = this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next;
+            if(this->doubly_linked_list.first_empty != -1)
+                this->doubly_linked_list.array[this->doubly_linked_list.first_empty].previous = -1;
+
+            int NextElement = this->doubly_linked_list.array[CurrentElement].next;
+            int PreviousElement = CurrentElement;
+            this->doubly_linked_list.array[PreviousElement].next = new_element;
+            this->doubly_linked_list.array[new_element].next = NextElement;
+            this->doubly_linked_list.array[new_element].previous = PreviousElement;
+            this->doubly_linked_list.array[new_element].element = e;
+            this->doubly_linked_list.array[NextElement].previous = new_element;
         }
-        current_position = next_position;
-        if(next_position == -1){
-            TComp auxiliary = this->doubly_linked_list.array[this->doubly_linked_list.tail].element;
-            this->doubly_linked_list.array[current_position].element = e;
-            int previous_position = this->doubly_linked_list.array[current_position].previous;
-            this->doubly_linked_list.array[previous_position].element = auxiliary;
-        }
-        else{
-            TComp auxiliary = this->doubly_linked_list.array[next_position].element;
-            this->doubly_linked_list.array[current_position].element = e;
-            this->doubly_linked_list.array[current_position].next = next_position;
-            int previous_position = this->doubly_linked_list.array[current_position].previous;
-            this->doubly_linked_list.array[previous_position].element = auxiliary;
-        }
-        this->doubly_linked_list.first_empty++;
     }
-    this->doubly_linked_list.size++;
 }
 
 SortedIteratedList::~SortedIteratedList() {

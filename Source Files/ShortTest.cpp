@@ -20,6 +20,10 @@ void testAll(){
 	assert(list.size() == 0);
 	assert(list.isEmpty());
     list.add(1);
+//    list.add(13);
+//    list.add(3);
+//    list.add(5);
+//    list.add(0);
     assert(list.size() == 1);
     assert(!list.isEmpty());
     ListIterator it = list.search(1);

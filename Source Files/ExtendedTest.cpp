@@ -126,7 +126,8 @@ int populate(SortedIteratedList& list, int cMin, int cMax, int s, int m) {
 	vector<int> v = random(cMin, cMax, s, m);
 	int n = v.size();
 	for (int i = 0; i < n; i++) {
-		list.add(v[i]);
+	    if(i==7) cout<<"."<<endl;
+	    list.add(v[i]);
 	}
 	return n;
 }

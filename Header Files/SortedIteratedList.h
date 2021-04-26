@@ -6,7 +6,7 @@ class ListIterator;
 typedef int TComp;
 typedef bool (*Relation)(TComp, TComp);
 #define NULL_TCOMP -11111
-#define INITIAL_CAPACITY 60
+#define INITIAL_CAPACITY 1
 
 class Node{
     public:
