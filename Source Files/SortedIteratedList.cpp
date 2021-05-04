@@ -47,8 +47,10 @@ TComp SortedIteratedList::remove(ListIterator& poz) {
 	if(poz.current_element == this->doubly_linked_list.head && poz.current_element == this->doubly_linked_list.tail){
 	    TComp removed_element = this->doubly_linked_list.array[this->doubly_linked_list.head].element;
         this->doubly_linked_list.array[this->doubly_linked_list.head].next = -1;
-        this->doubly_linked_list.array[this->doubly_linked_list.tail].previous = -1;
-        this->doubly_linked_list.size--;
+        this->doubly_linked_list.array[this->doubly_linked_list.head].previous = -1;
+        this->doubly_linked_list.array[this->doubly_linked_list.tail].element = NULL_TCOMP;
+        this->doubly_linked_list.size=0;
+        this->doubly_linked_list.first_empty=0;
         return removed_element;
 	}
 	else if(poz.current_element == this->doubly_linked_list.head){
@@ -64,8 +66,8 @@ TComp SortedIteratedList::remove(ListIterator& poz) {
         auto temporary_iterator = ListIterator(*this);
         while(temporary_iterator.valid() && temporary_iterator.current_element != poz.current_element)
             temporary_iterator.next();
-        if(!temporary_iterator.valid())
-            throw exception();
+//        if(!temporary_iterator.valid())
+//            throw exception();
         int element_to_be_removed = poz.current_element;
         TComp removed_element = this->doubly_linked_list.array[element_to_be_removed].element;
         temporary_iterator.next();
