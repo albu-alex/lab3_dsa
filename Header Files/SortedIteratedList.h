@@ -68,9 +68,6 @@ public:
 	//allocate a new node
 	int allocate();
 
-	//TODO elimina
-	//void print();
-
 	//destructor
 	~SortedIteratedList();
 
