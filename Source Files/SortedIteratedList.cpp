@@ -49,6 +49,8 @@ TComp SortedIteratedList::remove(ListIterator& poz) {
         this->doubly_linked_list.array[this->doubly_linked_list.head].next = -1;
         this->doubly_linked_list.array[this->doubly_linked_list.head].previous = -1;
         this->doubly_linked_list.array[this->doubly_linked_list.tail].element = NULL_TCOMP;
+        this->doubly_linked_list.head=-1;
+        this->doubly_linked_list.tail=-1;
         this->doubly_linked_list.size=0;
         this->doubly_linked_list.first_empty=0;
         return removed_element;
@@ -57,8 +59,19 @@ TComp SortedIteratedList::remove(ListIterator& poz) {
         TComp removed_element = this->doubly_linked_list.array[this->doubly_linked_list.head].element;
         int previous_head = this->doubly_linked_list.head;
         this->doubly_linked_list.head = this->doubly_linked_list.array[this->doubly_linked_list.head].next;
+        this->doubly_linked_list.array[this->doubly_linked_list.head].previous=-1;
         this->doubly_linked_list.array[previous_head].next = this->doubly_linked_list.first_empty;
         this->doubly_linked_list.first_empty = previous_head;
+        this->doubly_linked_list.size--;
+        return removed_element;
+	}
+	else if(poz.current_element == this->doubly_linked_list.tail){
+        TComp removed_element = this->doubly_linked_list.array[this->doubly_linked_list.tail].element;
+        int previous_tail = this->doubly_linked_list.tail;
+        this->doubly_linked_list.tail = this->doubly_linked_list.array[this->doubly_linked_list.tail].previous;
+        this->doubly_linked_list.array[this->doubly_linked_list.tail].next=-1;
+        this->doubly_linked_list.array[previous_tail].previous = this->doubly_linked_list.first_empty;
+        this->doubly_linked_list.first_empty = previous_tail;
         this->doubly_linked_list.size--;
         return removed_element;
 	}
@@ -66,14 +79,12 @@ TComp SortedIteratedList::remove(ListIterator& poz) {
         auto temporary_iterator = ListIterator(*this);
         while(temporary_iterator.valid() && temporary_iterator.current_element != poz.current_element)
             temporary_iterator.next();
-//        if(!temporary_iterator.valid())
-//            throw exception();
         int element_to_be_removed = poz.current_element;
         TComp removed_element = this->doubly_linked_list.array[element_to_be_removed].element;
         temporary_iterator.next();
         int next_element = temporary_iterator.current_element;
         this->doubly_linked_list.array[next_element].previous = this->doubly_linked_list.array[element_to_be_removed].previous;
-        this->doubly_linked_list.array[this->doubly_linked_list.array[element_to_be_removed].previous].next = this->doubly_linked_list.array[element_to_be_removed].next;
+        this->doubly_linked_list.array[this->doubly_linked_list.array[element_to_be_removed].previous].next = next_element;
         return removed_element;
 	}
 }
