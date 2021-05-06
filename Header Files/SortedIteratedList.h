@@ -65,9 +65,6 @@ public:
 	//resize for the current dynamic array of nodes
 	void resize();
 
-	//allocate a new node
-	int allocate();
-
 	//destructor
 	~SortedIteratedList();
 

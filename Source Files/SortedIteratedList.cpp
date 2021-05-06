@@ -22,24 +22,29 @@ SortedIteratedList::SortedIteratedList(Relation r) {
     this->doubly_linked_list.array[INITIAL_CAPACITY-1].element = NULL_TCOMP;
     this->relation = r;
 }
+//Theta(1) (initial capacity value)
 
 int SortedIteratedList::size() const {
     return this->doubly_linked_list.size;
 }
+//Theta(1)
 
 bool SortedIteratedList::isEmpty() const {
 	if(this->doubly_linked_list.size > 0) return false;
 	return true;
 }
+//Theta(1)
 
 ListIterator SortedIteratedList::first() const {
     ListIterator(*this).first();
     return ListIterator(*this);
 }
+//Theta(1)
 
 TComp SortedIteratedList::getElement(ListIterator poz) const {
     return poz.getCurrent();
 }
+//Theta(1)
 
 TComp SortedIteratedList::remove(ListIterator& poz) {
 	if(!poz.valid())
@@ -56,6 +61,7 @@ TComp SortedIteratedList::remove(ListIterator& poz) {
         return removed_element;
 	}
 	else if(poz.current_element == this->doubly_linked_list.head){
+        poz.next();
         TComp removed_element = this->doubly_linked_list.array[this->doubly_linked_list.head].element;
         int previous_head = this->doubly_linked_list.head;
         this->doubly_linked_list.head = this->doubly_linked_list.array[this->doubly_linked_list.head].next;
@@ -73,21 +79,22 @@ TComp SortedIteratedList::remove(ListIterator& poz) {
         this->doubly_linked_list.array[previous_tail].previous = this->doubly_linked_list.first_empty;
         this->doubly_linked_list.first_empty = previous_tail;
         this->doubly_linked_list.size--;
+        poz.next();
         return removed_element;
 	}
 	else{
-        auto temporary_iterator = ListIterator(*this);
-        while(temporary_iterator.valid() && temporary_iterator.current_element != poz.current_element)
-            temporary_iterator.next();
         int element_to_be_removed = poz.current_element;
         TComp removed_element = this->doubly_linked_list.array[element_to_be_removed].element;
-        temporary_iterator.next();
-        int next_element = temporary_iterator.current_element;
-        this->doubly_linked_list.array[next_element].previous = this->doubly_linked_list.array[element_to_be_removed].previous;
-        this->doubly_linked_list.array[this->doubly_linked_list.array[element_to_be_removed].previous].next = next_element;
+        this->doubly_linked_list.array[this->doubly_linked_list.array[element_to_be_removed].previous].next = this->doubly_linked_list.array[element_to_be_removed].next;
+        this->doubly_linked_list.array[this->doubly_linked_list.array[element_to_be_removed].next].previous = this->doubly_linked_list.array[element_to_be_removed].previous;
+        this->doubly_linked_list.array[element_to_be_removed].element = NULL_TCOMP;
+        this->doubly_linked_list.first_empty = element_to_be_removed;
+        this->doubly_linked_list.size--;
+        poz.next();
         return removed_element;
 	}
 }
+//Theta(1)
 
 void SortedIteratedList::resize() {
     this->doubly_linked_list.capacity*=2;
@@ -111,6 +118,7 @@ void SortedIteratedList::resize() {
     delete[] this->doubly_linked_list.array;
     this->doubly_linked_list.array = resized_array;
 }
+//Theta(n)
 
 ListIterator SortedIteratedList::search(TComp e) const{
     auto temporary_iterator = ListIterator(*this);
@@ -118,19 +126,7 @@ ListIterator SortedIteratedList::search(TComp e) const{
         temporary_iterator.next();
     return temporary_iterator;
 }
-
-int SortedIteratedList::allocate() {
-    int new_element = doubly_linked_list.first_empty;
-    if(new_element != -1){
-        this->doubly_linked_list.first_empty = this->doubly_linked_list.array[this->doubly_linked_list.first_empty].next;
-        if(this->doubly_linked_list.first_empty != -1){
-            this->doubly_linked_list.array[this->doubly_linked_list.first_empty].previous = -1;
-        }
-        this->doubly_linked_list.array[new_element].next = -1;
-        this->doubly_linked_list.array[new_element].previous = -1;
-    }
-    return new_element;
-}
+//O(n)
 
 void SortedIteratedList::add(TComp e) {
     if(this->size() == this->doubly_linked_list.capacity)
@@ -208,7 +204,9 @@ void SortedIteratedList::add(TComp e) {
         }
     }
 }
+//O(n)
 
 SortedIteratedList::~SortedIteratedList() {
 	delete[] this->doubly_linked_list.array;
 }
+//Theta(1)
