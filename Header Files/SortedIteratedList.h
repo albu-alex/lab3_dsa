@@ -65,6 +65,10 @@ public:
 	//resize for the current dynamic array of nodes
 	void resize();
 
+	//returns the last index of a given element
+    //if the element is not in the list it returns an invalid TPosition
+    ListIterator lastIndexOf(TComp elem) const;
+
 	//destructor
 	~SortedIteratedList();
 

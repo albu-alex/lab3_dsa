@@ -206,6 +206,21 @@ void SortedIteratedList::add(TComp e) {
 }
 //O(n)
 
+ListIterator SortedIteratedList::lastIndexOf(TComp elem) const {
+    ListIterator poz = ListIterator(*this);
+    while(poz.getCurrent() != elem && poz.valid())
+        poz.next();
+    ListIterator aux = poz;
+    aux.next();
+    while(aux.valid() && aux.getCurrent() == elem) {
+        poz.next();
+        aux.next();
+    }
+    return poz;
+}
+//Functions takes into account that elements are sorted
+//Complexity: O(n), where n is the length of the list
+
 SortedIteratedList::~SortedIteratedList() {
 	delete[] this->doubly_linked_list.array;
 }

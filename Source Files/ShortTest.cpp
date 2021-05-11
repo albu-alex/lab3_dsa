@@ -4,6 +4,7 @@
 #include "ListIterator.h"
 
 #include <exception>
+#include <iostream>
 using namespace std;
 
 bool relation1(TComp e1, TComp e2) {
@@ -35,5 +36,15 @@ void testAll(){
     assert(list.remove(it) == 1);
     assert(list.size() == 0);
     assert(list.isEmpty());
+    list.add(1);
+    list.add(1);
+    list.add(2);
+    itFirst.first();
+    itFirst.next();
+    cout<<itFirst.getCurrent()<<endl<<list.lastIndexOf(1).getCurrent()<<endl;
+    assert(itFirst.getCurrent() == list.lastIndexOf(1).getCurrent());
+    itFirst.next();
+    cout<<itFirst.getCurrent()<<endl<<list.lastIndexOf(2).getCurrent()<<endl;
+    assert(itFirst.getCurrent() == list.lastIndexOf(2).getCurrent());
 }
 
